@@ -3,7 +3,7 @@
 # ─────────────────────────────
 # Stage 1 — Build Stage
 # ─────────────────────────────
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 # 👆 Base image — Node.js 18 alpine (lightweight) use karo
 # alpine = Choti si Linux — sirf zaroorat ki cheezein
 
@@ -29,7 +29,7 @@ RUN npm run build
 # ─────────────────────────────
 # Stage 2 — Production Stage
 # ─────────────────────────────
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 # 👆 Naya fresh image — sirf production ke liye
 
 WORKDIR /app
