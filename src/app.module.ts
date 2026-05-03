@@ -21,15 +21,17 @@ import { redisStore } from 'cache-manager-redis-yet';
     isGlobal:true,
     imports:[ConfigModule],
     inject:[ConfigService],
-    useFactory:async (ConfigService:ConfigService)=>({
+    useFactory:async (configService:ConfigService)=>({
       store:await redisStore({
         // 👆 Redis ko store ki tarah use karo
         socket:{
-          host:ConfigService.get<string>('REDIS_HOST'),
-          port:ConfigService.get<number>('REDIS_PORT')
+          host:configService.get<string>('REDIS_HOST'),
+          port:configService.get<number>('REDIS_PORT')
         },
+        password: configService.get<string>('REDIS_PASSWORD') || undefined,
+      // 👆 Password bhi add karo
       }),
-      ttl:ConfigService.get<number>('CACHE_TTL')
+      ttl:configService.get<number>('CACHE_TTL')
     })
     
   }),
