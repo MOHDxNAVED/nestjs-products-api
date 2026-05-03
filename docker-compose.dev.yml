@@ -1,0 +1,34 @@
+# docker-compose.dev.yml
+
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: crud_postgres_dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: crud_app
+    ports:
+      - "6379:6379"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: crud_redis_dev
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+volumes:
+  postgres_dev_data:
+
+networks:
+  app_network:
+    driver: bridge

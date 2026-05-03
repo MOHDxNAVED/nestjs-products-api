@@ -1,0 +1,97 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+
+  # ─────────────────────────────
+  # PostgreSQL Database
+  # ─────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    # 👆 Official PostgreSQL image use karo
+    container_name: crud_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: crud_app
+      # 👆 Database automatically ban jaayega
+    ports:
+      - "5432:5432"
+      # 👆 Host:Container port mapping
+      # Tumhari machine:5432 → Container:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # 👆 Data persist karo — container band ho toh bhi data safe
+    networks:
+      - app_network
+      # 👆 Sab services ek network mein
+
+  # ─────────────────────────────
+  # Redis Cache
+  # ─────────────────────────────
+  redis:
+    image: redis:7-alpine
+    # 👆 Official Redis image
+    container_name: crud_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      # 👆 Redis data persist karo
+    networks:
+      - app_network
+
+  # ─────────────────────────────
+  # NestJS Application
+  # ─────────────────────────────
+  app:
+    build:
+      context: .
+      # 👆 Current folder mein Dockerfile dhundo
+      target: production
+      # 👆 Dockerfile ka production stage use karo
+    container_name: crud_app
+    ports:
+      - "3000:3000"
+    environment:
+      # 👆 Environment variables inject karo
+      DB_HOST: postgres
+      # 👆 'localhost' nahi — 'postgres' service ka naam
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: yourpassword
+      DB_NAME: crud_app
+      PORT: 3000
+      JWT_SECRET: mera_super_secret_key_123
+      REDIS_HOST: redis
+      # 👆 'localhost' nahi — 'redis' service ka naam
+      REDIS_PORT: 6379
+      CACHE_TTL: 60000
+    volumes:
+      - ./uploads:/app/uploads
+      # 👆 Uploads folder host se container mein
+      # Host machine par saved rahega ✅
+    depends_on:
+      - postgres
+      - redis
+      # 👆 App start hone se pehle
+      # postgres aur redis ready hone chahiye
+    networks:
+      - app_network
+    restart: unless-stopped
+    # 👆 App crash ho → automatically restart karo
+
+# ─────────────────────────────
+# Volumes — Data Persist Karne Ke Liye
+# ─────────────────────────────
+volumes:
+  postgres_data:
+  redis_data:
+
+# ─────────────────────────────
+# Network — Sab Services Baat Kar Sakein
+# ─────────────────────────────
+networks:
+  app_network:
+    driver: bridge

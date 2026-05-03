@@ -1,0 +1,104 @@
+
+@baseUrl = http://localhost:3000/
+@authToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Nzg3YzI2MS0xYmE3LTQzOTMtYmUzOC04MzE0MjQyZGRjNGQiLCJlbWFpbCI6Im1uQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3Nzc0Nzk3NCwiZXhwIjoxNzc4MzUyNzc0fQ.U6D1QAzCYnkJevwLaY6TpWV7623ty_h03M3uktgqh2k
+@contentType = application/json
+
+
+
+### get all products
+GET {{baseUrl}}product
+Authorization: {{authToken}}
+
+### find the product using pagination
+GET  http://localhost:3000/product?page=2&limit=4
+Authorization: {{authToken}}
+
+### create product
+POST {{baseUrl}}product
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "name": "xt",
+  "description": "Gaming Laptop",
+  "price": 75000,
+  "isAvailable": true,
+  "categoryId":"8a88a59c-3851-42a6-82b1-8c5a8837f2c8"
+}
+
+
+### get one product by Id
+GET {{baseUrl}}product/bc6e72c7-e875-41fa-9274-687196c49bb6
+Authorization: {{authToken}}
+
+### try to get product with wrong id
+GET {{baseUrl}}product/77cd8282-485d-4266-9a59-67699c346ca7
+Authorization: {{authToken}}
+
+
+
+### Update the product by id
+PATCH {{baseUrl}}product/bc6e72c7-e875-41fa-9274-687196c49bb6
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{   
+    "description": "Samsung"
+    
+}
+
+### delete product
+DELETE {{baseUrl}}product/bc6e72c7-e875-41fa-9274-687196c49bb6
+Authorization: {{authToken}}
+
+
+###############################Category######################################
+
+### create category
+POST {{baseUrl}}category
+Content-Type: {{contentType}}
+
+{
+    "name":"electronic"
+}
+
+### fetch all category
+GET http://localhost:3000/category
+
+
+### fetch all category
+GET {{baseUrl}}category
+
+################################################## Auth Controller #########################################################
+
+### sign-up
+POST  {{baseUrl}}auth/sign-up
+Content-Type: {{contentType}}
+
+{
+    "name":"Iran Nuri",
+    "email":"In@gmail.com",
+    "password":"Iran@123",
+    "role":"user"
+}
+
+
+### log-in
+###
+POST http://localhost:3000/auth/log-in
+Content-Type: application/json
+
+{
+    "email":"mn@gmail.com",
+    "password":"Naved@123"
+}
+
+###
+POST http://localhost:3000/auth/log-in
+Content-Type: application/json
+
+{
+    "email":"In@gmail.com",
+    "password":"Iran@123"
+}
+

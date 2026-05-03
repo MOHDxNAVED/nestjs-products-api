@@ -1,0 +1,8 @@
+# .dockerignore
+
+node_modules     # 👈 Container mein fresh install hoga
+dist             # 👈 Container mein fresh build hoga
+.env             # 👈 Secrets container mein mat jaayein
+.git             # 👈 Git history nahi chahiye
+uploads/*        # 👈 Uploaded files
+!uploads/.gitkeep
