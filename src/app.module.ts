@@ -25,7 +25,7 @@ import { redisStore } from 'cache-manager-redis-yet';
       store:await redisStore({
         // 👆 Redis ko store ki tarah use karo
         socket:{
-          host:ConfigService.get<string>('REDIS_URL'),
+          host:ConfigService.get<string>('REDIS_HOST'),
           port:ConfigService.get<number>('REDIS_PORT')
         },
       }),
