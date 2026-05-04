@@ -19,7 +19,7 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "name": "xt",
+  "name": "laptop",
   "description": "Gaming Laptop",
   "price": 75000,
   "isAvailable": true,

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request, Uplo
 import { ProductService } from './product.service';
 import { CreateProductDto } from './create-product.dto';
 import { UpdateProductDto } from './update-product.dto';
-import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Role } from 'src/auth/roles.enum';
@@ -21,10 +21,26 @@ export class ProductController {
     constructor(private readonly productService:ProductService){}
 
     @ApiOperation({ summary: 'Add new product' })
-    @ApiConsumes('multipart/form-data')
     @Roles(Role.ADMIN)
     @ApiResponse({ status: 201, description: 'Product created' })
     @ApiResponse({ status: 400, description: 'Wrong data' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({                           // 👈 Yeh add karo
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        description: { type: 'string' },
+        price: { type: 'number' },
+        isAvailable: { type: 'boolean' },
+        categoryId: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
     @UseInterceptors(FileInterceptor('image',multerConfig))
     @UseFilters(FileCleanupFilter)
     @Post()
@@ -61,6 +77,22 @@ export class ProductController {
     @ApiResponse({ status: 200, description: 'Product update ho gaya' })
     @ApiResponse({ status: 404, description: 'Product nahi mila' })
     @ApiConsumes('multipart/form-data')
+    @ApiBody({                           // 👈 Yeh add karo
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        description: { type: 'string' },
+        price: { type: 'number' },
+        isAvailable: { type: 'boolean' },
+        categoryId: { type: 'string' },
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
     @UseInterceptors(FileInterceptor('image',multerConfig))
     @Patch(':id')
     async update(@Param('id') id:string,@Body() dto:UpdateProductDto, @UploadedFile() file:Express.Multer.File){
