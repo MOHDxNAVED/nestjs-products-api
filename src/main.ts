@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Get, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { GlobalExceptionFilter } from './filters/http.ecxception.filter';
@@ -17,6 +17,12 @@ async function bootstrap() {
 
   // Global Interceptor register
   app.useGlobalInterceptors(new ResponseInterceptor);
+
+  app.enableCors({
+    origin:"http://localhost:4200",
+    methods:'GET,POST,DELETE,PATCH,PUT,HEAD',
+    credentials:true
+  })
  
   
   

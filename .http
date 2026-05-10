@@ -38,7 +38,7 @@ Authorization: {{authToken}}
 
 
 ### Update the product by id
-PATCH {{baseUrl}}product/bc6e72c7-e875-41fa-9274-687196c49bb6
+PATCH {{baseUrl}}product/d25ed31a-d3bf-403c-8183-30d82621908d
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
